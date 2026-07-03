@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SSE Demo</title>
+  </head>
+  <body>
+    <main>
+      <h1>Data streamed in</h1>
+      <section>
+        <p>
+          <span>Connection status:</span>
+          <span id="status">Not connected.</span>
+        </p>
+        <pre id="data"></pre>
+      </section>
+    </main>
+    <script type="module">
+      const container = document.getElementById("data");
+      const status = document.getElementById("status");
+
+      const response = await fetch("/event-reference");
+      const reader = response.body?.getReader();
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const content = new TextDecoder().decode(value);
+
+          if (content.startsWith("data: ")) {
+            /**
+             * @type {{ time: string; timestamp: number; } | { message: string; }}
+             */
+            const data = JSON.parse(content.slice("data: ".length).trim());
+
+            if ("message" in data) {
+              status.innerText = data.message;
+            } else {
+              container.innerText = `The data says the time is ${data.time} [${data.timestamp}].` + "\n" + container.innerText;
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
