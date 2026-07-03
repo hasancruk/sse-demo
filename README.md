@@ -5,6 +5,21 @@ This is a simple JS backend that supports streaming responses. The content type 
 > [!NOTE]
 > The [Web API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) `EventSource` was not used for the same reason that frameworks like [Datastar](https://data-star.dev/essays/another_dependency/) do not use it, which is the Web API does not support non-GET requests. This would have been a non-issue for this demo, but `fetch` is also a familiar API to the audience this demo is intended for.
 
+## Prerequisites
+
+- Deno
+    - [Installation guide](https://docs.deno.com/runtime/getting_started/installation/)
+
+## Usage
+
+Run dev server, which is configured to watch mode:
+
+```sh
+deno run start
+```
+
+And then in your browser, navigate to `http://localhost:8080/`.
+
 ## References
 
 - https://www.pedroalonso.net/blog/sse-nextjs-real-time-notifications/
